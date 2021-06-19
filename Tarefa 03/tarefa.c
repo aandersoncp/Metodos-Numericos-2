@@ -3,7 +3,6 @@
 
 long double funcao(long double x){
 	long double valor = pow(x, 1.5) + 2;
-	//printf("f(%.5Lf) = %Lf\n", x, valor);
 	return valor;
 }
 
