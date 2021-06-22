@@ -24,7 +24,7 @@ long double integral_numerica_aberta(long double xi, long double xf){
 }
 
 int main(){
-	long double valor_anterior, delta, limite_inferior, limite_superior, epsilon = 0.000001, xi, xf, I_a, I_b, N, E;
+	long double valor_anterior, delta, limite_inferior, limite_superior, epsilon = 0.000001, xi, xf, I_a, I_b, N, E, contador;
 	printf("Digite o valor do limite inferior: \n");
 	scanf("%Lf", &limite_inferior);
 	printf("Digite o valor do limite superior: \n");
@@ -32,8 +32,10 @@ int main(){
 	
 	N = 1;
 	valor_anterior = 0;
+	contador = 0;
 
 	do{
+		contador++;
 		N = 2*N;
 		delta = (limite_superior - limite_inferior)/N;
 		I_a = 0;
@@ -45,10 +47,14 @@ int main(){
 		E = (I_a - valor_anterior)/I_a;
 		valor_anterior = I_a;
 	} while(E > epsilon);
+
+	printf("\nFECHADA:\nValor: %.6Lf\nNúmero de iterações: %.0Lf\nNúmero de segmentos: %.0Lf\n", I_a, contador, N);
 	
 	N = 1;
 	valor_anterior = 0;
+	contador = 0;
 	do{
+		contador++;
 		N = 2*N;
 		delta = (limite_superior - limite_inferior)/N;
 		I_b = 0;
@@ -61,7 +67,6 @@ int main(){
 		valor_anterior = I_b;
 	} while(E > epsilon);
 	
-	printf("\nFECHADA: %.6Lf\n", I_a);
-	printf("ABERTA: %.6Lf\n", I_b);
+	printf("\nABERTA: \nValor: %.6Lf\nNúmero de iterações: %.0Lf\nNúmero de segmentos: %.0Lf\n", I_b, contador, N);
 	return 0;
 }
