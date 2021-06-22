@@ -1,3 +1,6 @@
+// NOME: ANTÔNIO ANDERSON COSTA PEREIRA 
+// MATRÍCULA: 422029
+
 #include<stdio.h>
 #include<math.h>
 
@@ -21,13 +24,11 @@ long double integral_numerica_aberta(long double xi, long double xf){
 }
 
 int main(){
-	long double valor_anterior, delta, limite_inferior, limite_superior, epsilon, xi, xf, I_a, I_b, N, E;
+	long double valor_anterior, delta, limite_inferior, limite_superior, epsilon = 0.000001, xi, xf, I_a, I_b, N, E;
 	printf("Digite o valor do limite inferior: \n");
 	scanf("%Lf", &limite_inferior);
 	printf("Digite o valor do limite superior: \n");
 	scanf("%Lf", &limite_superior);
-	printf("Digite o valor da tolerância: \n");
-	scanf("%Lf", &epsilon);
 	
 	N = 1;
 	valor_anterior = 0;
@@ -60,7 +61,7 @@ int main(){
 		valor_anterior = I_b;
 	} while(E > epsilon);
 	
-	printf("\nFECHADA: %.4Lf\n", I_a);
-	printf("ABERTA: %.4Lf\n", I_b);
+	printf("\nFECHADA: %.6Lf\n", I_a);
+	printf("ABERTA: %.6Lf\n", I_b);
 	return 0;
 }
