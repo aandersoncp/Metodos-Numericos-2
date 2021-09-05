@@ -165,21 +165,50 @@ void mostrar_vetor(double *vetor){
 		printf("}\n");
 }
 
-int main(){
+double PR(double A[5][5], double epsilon){
+	double erro, sum;
+	double v_velho[5] = {0.0, 0.0, 0.0, 0.0, 0.0}, v_novo[5] = {1.0, 1.0, 1.0, 1.0, 1.0}, lambda_novo = 1.0, lambda_velho = 1.0;
+	do{
 
-	double A[5][5] = {{40, 8, 4, 2, 1}, {8, 30, 12, 6, 2}, {4, 12, 20, 1, 2}, {2, 6, 1, 25, 4}, {1, 2, 2, 4, 5}};
-	double v_velho[5] = {0.0, 0.0, 0.0, 0.0, 0.0}, v_novo[5] = {1.0, 1.0, 1.0, 1.0, 1.0}, lambda_novo = 0.0, lambda_velho = 0.0, epsilon = 0.000001, erro, mi = 10;
-	int n = 5, cont = 0;
-	double x[n];
-	x[0] = 0;
-	x[1] = 0;
-	x[2] = 0;
-	x[3] = 0;
-	x[4] = 0;
+		lambda_velho = lambda_novo;
+		
+		uniVector(v_novo);
+		
+		v_velho[0] = v_novo[0];
+		v_velho[1] = v_novo[1];
+		v_velho[2] = v_novo[2];
+		v_velho[3] = v_novo[3];
+		v_velho[4] = v_novo[4];
 
-	for(int i = 0; i < n; i++){
-		A[i][i] = A[i][i] - mi;
-	}
+		//mostrar_vetor(v_velho);
+
+		for(int i = 0; i < 5; i++){
+			sum = 0;
+			for(int k = 0; k < 5; k++){
+				sum += A[i][k]*v_velho[k];
+			}
+			v_novo[i] = sum;
+		}
+		lambda_novo = produto(v_velho, v_novo);
+		
+		erro = (lambda_novo - lambda_velho)/lambda_novo;
+		
+		if(erro < 0){
+			erro = -erro;
+		}
+
+	}while(erro > epsilon);
+
+	printf("Autovetor: ");
+	mostrar_vetor(v_velho);
+	return lambda_novo;
+
+}
+
+double PI(double A[5][5], int n, double epsilon){
+	
+	double erro, x[5], cont = 0;
+	double v_velho[5] = {0.0, 0.0, 0.0, 0.0, 0.0}, v_novo[5] = {1.0, 1.0, 1.0, 1.0, 1.0}, lambda_novo = 1.0, lambda_velho = 1.0;
 
 	do{
 		cont++;
@@ -211,7 +240,44 @@ int main(){
 
 	printf("Autovetor: ");
 	mostrar_vetor(v_velho);
-	printf("Autovalor: %f\n", lambda_novo + mi);
+	return lambda_novo;
+}
+
+void PD(double A[5][5], int n, double epsilon, double mi){
+	double lambda;
+
+	for(int i = 0; i < n; i++){
+		A[i][i] = A[i][i] - mi;
+	}
+	lambda = PI(A, n, epsilon);
+
+	printf("Autovalor: %f\n", lambda + mi);
+
+}
+
+
+int main(){
+	int n = 5;
+	double A[5][5] = {{40, 8, 4, 2, 1}, {8, 30, 12, 6, 2}, {4, 12, 20, 1, 2}, {2, 6, 1, 25, 4}, {1, 2, 2, 4, 5}};
+	double epsilon = 0.000001, mi, l_min, l_max;
+
+	l_max = PR(A, epsilon);
+	printf("Autovalor: %f\n", l_max);
+
+	if(l_max < 0){
+		l_max = -l_max;
+	}
+
+	l_min = PI(A, n, epsilon);
+	printf("Autovalor: %f\n", l_min);
+
+	if(l_min < 0){
+		l_min = -l_min;
+	}
+
+	mi = (l_max + l_min)/2;
+
+	PD(A, n, epsilon, mi);
 
 	return 0;
 }
